@@ -431,3 +431,18 @@ def muennighoff_tokenize_function(inp: Dict) -> Dict[str, str]:
         raise ValueError(
             f'Unable to process prompt/response from {inp=}') from e
     return {'prompt': prompt, 'response': response}
+
+@dataset_constructor.register("huggyllama/llama")
+def gorilla_preprocessing_function(inp):
+    line = inp["code"]
+    line = line["code"].split("Output")
+    if len(line) == 2:
+
+        instruction = line[0].split(":")
+        instruction = instruction[1]
+        instruction = instruction.replace("###", "")
+        instruction = instruction.strip()
+
+        output = line[1][2:]
+
+        return {'prompt': instruction, 'response': output}
