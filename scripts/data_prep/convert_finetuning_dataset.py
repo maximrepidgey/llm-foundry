@@ -174,7 +174,7 @@ def main(args: Namespace) -> None:
 
     for split_name in args.splits:
         print(f"name===========")
-        print(f'args.data_subset')
+        print(f'{args.data_subset}')
         print(f"name===========")
         dataset = hf_datasets.load_dataset(path=args.dataset,
                                            name=args.data_subset,
