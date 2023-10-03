@@ -177,7 +177,6 @@ def main(args: Namespace) -> None:
         print(f'{args.data_subset}')
         print(f"name===========")
         dataset = hf_datasets.load_dataset(path=args.dataset,
-                                           name=args.data_subset,
                                            split=split_name,
                                            streaming=True)
         loader = build_dataloader(dataset=dataset,
