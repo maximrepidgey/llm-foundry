@@ -184,6 +184,7 @@ def main(args: Namespace) -> None:
 
         # Write samples
         print(f'Converting {split_name} to MDS format...')
+        print(f'data {dataset}')
         out = os.path.join(args.out_root, split_name)
         if args.local is not None:
             out = (os.path.join(args.local, split_name), out)
