@@ -96,7 +96,7 @@ class SimpleDataset(IterableDataset):
             yield {key: sample[key].encode('utf-8') for key in self.columns}
 
 
-def build_dataloader(dataset: SimpleDataset,
+def build_dataloader(dataset: IterableDataset,
                      batch_size: int,
                      num_workers: Optional[int] = None) -> DataLoader:
     if num_workers is None:
@@ -174,7 +174,7 @@ def main(args: Namespace) -> None:
 
     for split_name in args.splits:
         print(f"name===========")
-        print(f'{args.data_subset}')
+        print(f'{args.data_subset}') # is None
         print(f"name===========")
         dataset = hf_datasets.load_dataset(path=args.dataset,
                                            split=split_name,
@@ -186,13 +186,14 @@ def main(args: Namespace) -> None:
 
         # Write samples
         print(f'Converting {split_name} to MDS format...')
-        print(f'data {dataset}')
+        print(f'data {dataset.features}')
         out = os.path.join(args.out_root, split_name)
         if args.local is not None:
             out = (os.path.join(args.local, split_name), out)
             keep_local = True
         else:
             keep_local = False
+        print("debug-1")
         with MDSWriter(columns={key: 'str' for key in columns},
                        out=out,
                        compression=args.compression,
