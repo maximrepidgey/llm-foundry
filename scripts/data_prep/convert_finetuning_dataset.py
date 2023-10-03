@@ -158,6 +158,7 @@ def main(args: Namespace) -> None:
     """
     if args.skip_preprocessing:
         preprocessing_fn = lambda x: x  # Just an identity function
+        print("skip----")
     else:
         preprocessor_str = args.preprocessor
         preprocessing_fn = dataset_constructor.get_preprocessing_fn_from_str(
@@ -179,6 +180,9 @@ def main(args: Namespace) -> None:
         dataset = hf_datasets.load_dataset(path=args.dataset,
                                            split=split_name,
                                            streaming=True)
+        print(next(iter(dataset)))
+        print(f'data {dataset.features}')
+
         loader = build_dataloader(dataset=dataset,
                                   batch_size=512,
                                   num_workers=args.num_workers)
@@ -186,7 +190,6 @@ def main(args: Namespace) -> None:
 
         # Write samples
         print(f'Converting {split_name} to MDS format...')
-        print(f'data {dataset.features}')
         out = os.path.join(args.out_root, split_name)
         if args.local is not None:
             out = (os.path.join(args.local, split_name), out)
